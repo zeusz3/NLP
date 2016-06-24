@@ -33,7 +33,41 @@ public class Pa1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        eOfXY();
+        //part 1
+        //applyRare();
+        //eOfXY();
+        //part 2
+        q210();
+    }
+    
+    public static String[] viterbi(String[] sentence) {
+        String k1 = "*", k0 = "*";
+        
+    }
+    
+    public static void q210() {
+        TreeMap<String, Float> gram2 = new TreeMap();
+        TreeMap<String, Float> q = new TreeMap();
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get("../h1-p/gene_rare.counts"), charset)) {
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                if(!line.isEmpty()) {
+                    if(line.contains("2-GRAM")) {
+                        String[] words = line.split(" 2-GRAM ");
+                        gram2.put(words[1], Float.valueOf(words[0]));
+                    }
+                    if(line.contains("3-GRAM")) {
+                        String[] words = line.split(" ");
+                        Float y0 = Float.valueOf(words[0]);
+                        q.put(words[2] + " " + words[3] + " " + words[4], y0/gram2.get(words[2] + " " + words[3]));
+                    }
+                }
+            }
+            System.out.println(q);
+            reader.close();
+        } catch (IOException x) {
+            System.err.format("IOException: %s%n", x);
+        }
     }
     
     public static void eOfXY() {
@@ -90,8 +124,8 @@ public class Pa1 {
             System.err.format("IOException: %s%n", x);
         }
         try {
-            BufferedWriter writer = Files.newBufferedWriter(Paths.get("../h1-p/gene_dev.p1.out"), charset);
-            BufferedReader reader = Files.newBufferedReader(Paths.get("../h1-p/gene.dev"), charset);
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get("../h1-p/gene_test.p1.out"), charset);
+            BufferedReader reader = Files.newBufferedReader(Paths.get("../h1-p/gene.test"), charset);
             String line;
             while((line = reader.readLine()) != null) {
                 if(!line.isEmpty()) {
